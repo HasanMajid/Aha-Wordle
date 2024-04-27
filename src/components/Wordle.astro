@@ -19,6 +19,7 @@ console.log(selectedRow);
   style={{ margin: "auto", width: "fit-content" }}
   x-data={`{selectedRow: ${selectedRow}}`}
   id="wordle"
+  hx-swap-oob="true"
 >
   <form id="wordle-form" hx-get="/partials/word-check" hx-target="#game">
     <input type="hidden" name="selectedRow" x-bind:value="selectedRow" />
