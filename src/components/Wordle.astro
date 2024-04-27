@@ -1,6 +1,4 @@
 ---
-export const partial = true;
-
 import Row from "./Row.astro";
 const tempRow = Astro.url.searchParams.get("selectedRow");
 let selectedRow = tempRow ? parseInt(tempRow) : 1; // if tempRow is null, initialize it to 1
@@ -19,9 +17,8 @@ console.log(selectedRow);
   style={{ margin: "auto", width: "fit-content" }}
   x-data={`{selectedRow: ${selectedRow}}`}
   id="wordle"
-  hx-swap-oob="true"
 >
-  <form id="wordle-form" hx-get="/partials/word-check" hx-target="#game">
+  <form id="wordle-form" hx-get="/partials/word-check" hx-target="#game" hx-swap="outerHTML">
     <input type="hidden" name="selectedRow" x-bind:value="selectedRow" />
     <Row rowNumber={1} selectedRow={selectedRow} />
     <Row rowNumber={2} selectedRow={selectedRow} />
