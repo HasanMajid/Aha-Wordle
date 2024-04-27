@@ -1,0 +1,35 @@
+<html lang="en" x-data x-bind:data-theme="$store.theme.on">
+  <head>
+    <meta char-set="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <meta name="viewport" content="width=device-width" />
+    <title>Astro</title>
+  </head>
+  <body>
+    <button x-data x-on:click="$store.theme.toggle()">Theme</button>
+    <slot />
+  </body>
+</html>
+
+<script>
+  import Alpine from "alpinejs";
+
+  interface ThemeStore {
+    on: "dark" | "light";
+    toggle: () => void;
+  }
+
+  Alpine.store("theme", {
+    on: "dark",
+
+    toggle() {
+      console.log(this.on);
+      this.on = this.on === "dark" ? "light" : "dark";
+    },
+  } as ThemeStore);
+</script>

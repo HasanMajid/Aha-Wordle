@@ -1,0 +1,68 @@
+---
+const { rowNumber } = Astro.props;
+
+// const row = Astro.url.searchParams.get(`word${rowNumber}`)
+//   ? Astro.url.searchParams.get("word1")?.split("")
+//   : ["", "", "", "", ""];
+
+const tempRow = ["", "", "", "", ""];
+let row = Astro.url.searchParams.get(`word${rowNumber}`)?.split("");
+if (row) {
+  row.forEach((letter, index) => {
+    tempRow[index] = letter;
+  });
+}
+
+row = tempRow;
+
+const newRow = row?.map((letter: string) => `'${letter}'`);
+---
+
+<style>
+  .test {
+    border: rgb(0, 136, 255) 3px solid !important;
+  }
+</style>
+
+<div
+  x-data={`{row: [${newRow}], rowNumber: ${rowNumber} }`}
+  style={{ display: "flex" }}
+  @keydown.document=`
+    if ($event.key === 'Backspace' && selectedRow === rowNumber) {
+        const index = row.indexOf('');
+        if (index === 0) {
+            return;
+        } else if (index === -1) {
+            row[4] = '';
+        }
+        else {
+            row[index - 1] = '';
+        }
+    } else if (selectedRow === rowNumber && $event.key.length === 1 && $event.key.toLowerCase().match(/[a-z]/i)) {
+        row[row.indexOf('')] = $event.key.toUpperCase()
+    }`
+>
+  <input type="hidden" name=`word${rowNumber}` x-bind:value="row.join('')" />
+  <template x-for="(letter, index) in row" style={{ flexDirection: "row" }}>
+    <input
+      disabled
+      x-model="letter"
+      @keyup
+      x-bind:class=`
+        (selectedRow === rowNumber) && 
+        (row.indexOf('') === index || (index === 4 && row.indexOf('') === -1))
+        ? 'test' : ''`
+      x-init="if (selectedRow === rowNumber) console.log(row.indexOf(''), index)"
+      style={{
+        alignText: "center",
+        padding: "auto",
+        width: "3.4rem",
+        height: "3.4rem",
+        marginInline: "0.1rem",
+        border: "2px gray solid",
+        color: "white",
+        fontSize: "1.2rem",
+      }}
+    />
+  </template>
+</div>
