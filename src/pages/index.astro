@@ -1,44 +1,8 @@
 ---
 import Layout from "../components/Layout.astro";
 import Wordle from "../components/Wordle.astro";
-
-import Row from "../components/Row.astro";
-const tempRow = Astro.url.searchParams.get("selectedRow");
-let selectedRow = tempRow ? parseInt(tempRow) : 1; // if tempRow is null, initialize it to 1
-let word = Astro.url.searchParams.get(`word${selectedRow}`);
-
-while (word?.length === 5 && selectedRow !== 6) {
-  selectedRow += 1;
-  word = Astro.url.searchParams.get(`word${selectedRow}`);
-}
-
-console.log(selectedRow);
 ---
 
 <Layout>
-
-<div
-  id="game"
-  style={{ margin: "auto", width: "fit-content" }}
-  x-data={`{selectedRow: ${selectedRow}}`}
-  id="wordle"
->
-  <form id="wordle-form" hx-get="/partials/word-check" hx-target="#game">
-    <input type="hidden" name="selectedRow" x-bind:value="selectedRow" />
-    <Row rowNumber={1} selectedRow={selectedRow} />
-    <Row rowNumber={2} selectedRow={selectedRow} />
-    <Row rowNumber={3} selectedRow={selectedRow} />
-    <Row rowNumber={4} selectedRow={selectedRow} />
-    <Row rowNumber={5} selectedRow={selectedRow} />
-    <Row rowNumber={6} selectedRow={selectedRow} />
-
-    <button
-      type="submit"
-      style={{ width: "fit-content", height: "fit-content" }}
-    >
-      submit
-    </button>
-  </form>
-</div>
-
+  <Wordle />
 </Layout>
