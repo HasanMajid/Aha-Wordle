@@ -1,10 +1,6 @@
 ---
 const { rowNumber } = Astro.props;
 
-// const row = Astro.url.searchParams.get(`word${rowNumber}`)
-//   ? Astro.url.searchParams.get("word1")?.split("")
-//   : ["", "", "", "", ""];
-
 const tempRow = ["", "", "", "", ""];
 let row = Astro.url.searchParams.get(`word${rowNumber}`)?.split("");
 if (row) {
@@ -62,6 +58,7 @@ const newRow = row?.map((letter: string) => `'${letter}'`);
         border: "2px gray solid",
         color: "white",
         fontSize: "1.2rem",
+        textAlign: "center"
       }}
     />
   </template>
