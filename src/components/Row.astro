@@ -1,6 +1,8 @@
 ---
-const { rowNumber } = Astro.props;
+const { rowNumber, selectedRow } = Astro.props;
+import { wordOfTheDay } from "../util/constants";
 
+let rowColors: string[] = [];
 const tempRow = ["", "", "", "", ""];
 let row = Astro.url.searchParams.get(`word${rowNumber}`)?.split("");
 if (row) {
@@ -8,15 +10,76 @@ if (row) {
     tempRow[index] = letter;
   });
 }
+if (row) {
+  row.forEach((letter, index) => {
+    if (letter === wordOfTheDay[index].toUpperCase()) {
+      rowColors[index] = "green";
+    } else if (wordOfTheDay.toUpperCase().includes(letter)) {
+      rowColors[index] = "yellow";
+    } else {
+      rowColors[index] = "gray";
+    }
+  });
+}
 
 row = tempRow;
+let gameState: "ingame" | "won" | "lost" = "ingame";
+
+const greenOccurences = rowColors.reduce(
+  (a, v) => (v === "green" ? a + 1 : a),
+  0
+);
+
+if (greenOccurences === 5) {
+  gameState = "won";
+} else if (rowNumber === 4 && rowColors.length === 5) {
+  gameState = "lost";
+}
 
 const newRow = row?.map((letter: string) => `'${letter}'`);
+rowColors = rowColors.map((letter: string) => `'${letter}'`);
 ---
+
+{
+  gameState === "lost" && (
+    <h2
+      id="game-state"
+      hx-swap-oob="true"
+      style={{width: "fit-content", margin: "auto", height: "3rem"}}
+    >
+      You Lost
+    </h2>
+  )
+}
+
+{
+  gameState === "won" && (
+    <h2
+      id="game-state"
+      hx-swap-oob="true"
+      style={{width: "fit-content", margin: "auto", height: "3rem"}}
+    >
+      You Win
+    </h2>
+  )
+}
 
 <style>
   .test {
     border: rgb(0, 136, 255) 3px solid !important;
+  }
+  input {
+    align-text: center;
+    padding: auto;
+    width: 3.4rem;
+    height: 3.4rem;
+    margin-inline: 0.1rem;
+    border: 2px gray solid;
+    color: white;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .correct {
   }
 </style>
 
@@ -49,17 +112,7 @@ const newRow = row?.map((letter: string) => `'${letter}'`);
         (row.indexOf('') === index || (index === 4 && row.indexOf('') === -1))
         ? 'test' : ''`
       x-init="if (selectedRow === rowNumber) console.log(row.indexOf(''), index)"
-      style={{
-        alignText: "center",
-        padding: "auto",
-        width: "3.4rem",
-        height: "3.4rem",
-        marginInline: "0.1rem",
-        border: "2px gray solid",
-        color: "white",
-        fontSize: "1.2rem",
-        textAlign: "center"
-      }}
+      x-bind:style=`{ backgroundColor: [${rowColors}][index] }`
     />
   </template>
 </div>
