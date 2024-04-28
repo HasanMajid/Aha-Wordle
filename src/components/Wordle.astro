@@ -18,7 +18,12 @@ console.log(selectedRow);
   x-data={`{selectedRow: ${selectedRow}}`}
   id="wordle"
 >
-  <form id="wordle-form" hx-get="/partials/word-check" hx-target="#game" hx-swap="outerHTML">
+  <form
+    id="wordle-form"
+    hx-get="/partials/word-check"
+    hx-target="#game"
+    hx-swap="outerHTML"
+  >
     <input type="hidden" name="selectedRow" x-bind:value="selectedRow" />
     <Row rowNumber={1} selectedRow={selectedRow} />
     <Row rowNumber={2} selectedRow={selectedRow} />
