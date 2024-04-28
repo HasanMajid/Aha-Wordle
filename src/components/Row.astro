@@ -64,24 +64,6 @@ rowColors = rowColors.map((letter: string) => `'${letter}'`);
   )
 }
 
-<style>
-  .test {
-    border: rgb(0, 136, 255) 3px solid !important;
-  }
-  input {
-    align-text: center;
-    padding: auto;
-    width: 3.4rem;
-    height: 3.4rem;
-    margin-inline: 0.1rem;
-    border: 2px gray solid;
-    color: white;
-    font-size: 1.2rem;
-    text-align: center;
-  }
-  .correct {
-  }
-</style>
 
 <div
   x-data={`{row: [${newRow}], rowNumber: ${rowNumber} }`}
@@ -116,3 +98,20 @@ rowColors = rowColors.map((letter: string) => `'${letter}'`);
     />
   </template>
 </div>
+
+<style>
+  .test {
+    border: rgb(0, 136, 255) 3px solid !important;
+  }
+  input {
+    align-text: center;
+    padding: auto;
+    width: 3.4rem;
+    height: 3.4rem;
+    margin-inline: 0.1rem;
+    border: 2px gray solid;
+    color: white;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+</style>
